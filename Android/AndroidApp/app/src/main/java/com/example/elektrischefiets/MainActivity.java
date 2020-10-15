@@ -6,11 +6,13 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
@@ -20,33 +22,44 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothSocket bluetoothSocket;
     private OutputStream outputStream;
+    private InputStream inputStream;
 
     private final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private final String HC06Address = "98:D3:81:FD:41:7B";
+
+    private TextView progressTextBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        makeConnectionSure();
+
+        this.progressTextBox = findViewById(R.id.ProgressTextView);
     }
 
-    public void onClick(View view) {
-        sendData("A");
+    public void onClick(View view) throws InterruptedException {
+        this.progressTextBox.setText("Verbinding maken met de step...");
+
+        if (!makeConnectionSure()) {
+            this.progressTextBox.setText("Probeer opnieuw");
+            return;
+        }
+
+        this.progressTextBox.setText("Je bent verbonden met de step :D");
     }
 
-    public void makeConnectionSure() {
+    public boolean makeConnectionSure() {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (bluetoothAdapter == null) {
             makeToast("Dit apparaat werkt niet met bluetooth", true);
-            return;
+            return false;
         }
 
         if (!this.bluetoothAdapter.isEnabled()) {
             Intent enableBTIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBTIntent, 1);
-            return;
+            return false;
         }
 
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -54,11 +67,12 @@ public class MainActivity extends AppCompatActivity {
             String deviceAddress = device.getAddress();
             if (deviceAddress.equals(this.HC06Address)) {
                 connectToScooter();
-                return;
+                return true;
             }
         }
 
         makeToast("Je telefoon kan de step niet vinden", false);
+        return false;
     }
 
     private void connectToScooter() {
@@ -86,9 +100,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            outputStream = this.bluetoothSocket.getOutputStream();
+            this.outputStream = this.bluetoothSocket.getOutputStream();
+            this.inputStream = this.bluetoothSocket.getInputStream();
         } catch (IOException e) {
-            makeToast("Kon de output stream niet openen", true);
+            makeToast("Kon de streams niet openen", true);
         }
     }
 
