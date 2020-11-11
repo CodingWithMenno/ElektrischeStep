@@ -2,12 +2,17 @@
 
 
 const uint8_t VescOutputPin = 3;
-
 const uint8_t PotentiometerPin = A0;
 
-String BluetoothCommand;
 
+String BluetoothCommand;
 Servo esc;
+
+
+bool electronicBrakeOn = false; //eloctronic braking controlled by the esc.
+double power = 0;
+
+bool connectedToMobile = false;
 
 
 void setup() {
@@ -22,12 +27,35 @@ void setup() {
 void loop() {
   if(Serial.available()) //to judge whether the serial port receives the data.
   {
-      BluetoothCommand = String(Serial.read());  //reading (Bluetooth) data of serial port,giving the value of val;
-      Serial.println(BluetoothCommand);
+      BluetoothCommand = String(Serial.readString());  //reading bluetooth data.
+
+      if (BluetoothCommand == "CONNECT") {
+        Serial.println("OKE");
+      }
+
+      if (BluetoothCommand == "START") {
+        connectedToMobile = true;
+      }
   } 
   
-  double potValue = analogRead(PotentiometerPin);
-  double mappedValue = map(potValue, 0 , 1023, 1000, 2000);
-  esc.writeMicroseconds(mappedValue);
+  double potValue = analogRead(PotentiometerPin); //reading the gasthrottle.
+  double oldPower = power;
+  double mappedValue = 1000;
+  
+  if(electronicBrakeOn) {
+    mappedValue = map(potValue, 310 , 865, 1000, 2000);
+    power = map(mappedValue, 1000, 2000, 0, 100);
+  } else {
+    mappedValue = map(potValue, 310 , 865, 1250, 2000);
+    power = map(mappedValue, 1250, 2000, 0, 100);
+  }
 
+  if (connectedToMobile) {
+    double difference = oldPower - power;
+    if (difference > 0.999 || difference < -0.999) { //if the power has changed, then write the new power to bluetooth
+      Serial.write((int) power);
+    }
+  }
+  
+  esc.writeMicroseconds(mappedValue);
 }
