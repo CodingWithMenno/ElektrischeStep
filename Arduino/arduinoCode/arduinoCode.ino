@@ -30,11 +30,21 @@ void loop() {
       BluetoothCommand = String(Serial.readString());  //reading bluetooth data.
 
       if (BluetoothCommand == "CONNECT") {
-        Serial.println("OKE");
+        Serial.write(119);
       }
 
       if (BluetoothCommand == "START") {
         connectedToMobile = true;
+      }
+
+      if (BluetoothCommand == "STOP") {
+        connectedToMobile = false;
+        Serial.write(120);
+      }
+
+      if (BluetoothCommand == "BRAKE") {
+        electronicBrakeOn = !electronicBrakeOn;
+        Serial.write(124);
       }
   } 
   
