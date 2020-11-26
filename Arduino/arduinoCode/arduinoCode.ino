@@ -62,7 +62,7 @@ void loop() {
 
   if (connectedToMobile) {
     double difference = oldPower - power;
-    if (difference > 0.999 || difference < -0.999) { //if the power has changed, then write the new power to bluetooth
+    if (difference > 0.99999 || difference < -0.99999) { //if the power has changed, then write the new power to bluetooth
       Serial.write((int) power);
     }
   }

@@ -3,7 +3,6 @@ package com.example.test;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.widget.TextView;
 
 import com.example.test.bluetoothCodes.BluetoothCodeReceive;
 import com.example.test.bluetoothCodes.BluetoothCodeSend;
@@ -11,7 +10,6 @@ import com.example.test.bluetoothCodes.BluetoothCodeSend;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 

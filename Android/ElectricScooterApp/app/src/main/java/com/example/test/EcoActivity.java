@@ -55,13 +55,12 @@ public class EcoActivity extends AppCompatActivity implements View.OnClickListen
                 BluetoothHandler.sendData(BluetoothCodeSend.STOPSENDING);
 
                 try {
-                    Thread.sleep(30);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                this.ecoPowerMeter.setProgress(0);
             }
+            this.ecoPowerMeter.setProgress(0);
         }
     }
 
