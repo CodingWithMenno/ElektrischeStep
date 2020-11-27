@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScooterApp</string>
+    <string name="made_by">Gemaakt door: Menno Bil</string>
+    <string name="connect_button">Verbind</string>
+</resources>

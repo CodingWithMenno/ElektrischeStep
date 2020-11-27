@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.DrivingActivity">
+
+    <TextView
+        android:id="@+id/speedMeter"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:text="22"
+        android:layout_width="69sp"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KM/H"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/speedMeter"
+        app:layout_constraintStart_toEndOf="@+id/speedMeter" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/electricBrake"
+        android:onClick="onElectronicBrakeClicked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="40dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:track="@drawable/custom_switch_track"
+        android:thumb="@drawable/custom_switch_thumb"/>
+
+    <Button
+        android:id="@+id/btnStart"
+        android:onClick="onStartClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:text="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.progress.progressview.ProgressView
+        android:id="@+id/powerMeterLeft"
+        android:layout_marginLeft="130dp"
+        android:rotation="270"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/powerMeterRight"
+        app:pvProgressWidth="20dp"
+        app:pvDirection="fromLeft"
+        app:pvAnimateDuration="1"
+        app:pvProgress="0.6" />
+
+    <com.progress.progressview.ProgressView
+        android:id="@+id/powerMeterRight"
+        android:layout_marginRight="130dp"
+        android:rotation="90"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/powerMeterLeft"
+        app:pvProgressWidth="20dp"
+        app:pvDirection="fromRight"
+        app:pvAnimateDuration="1"
+        app:pvProgress="0.6" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

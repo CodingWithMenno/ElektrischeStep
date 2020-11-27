@@ -1,0 +1,4 @@
+Kleur in de cirkel bij:
+
+ECO = GROEN
+POWER = ROOD
