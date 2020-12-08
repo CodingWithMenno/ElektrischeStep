@@ -11,7 +11,7 @@ Servo esc;
 
 bool electronicBrakeOn = false; //eloctronic braking controlled by the esc.
 double power = 0;
-
+bool emergencyStopOn = false;
 bool connectedToMobile = false;
 
 
@@ -31,13 +31,16 @@ void loop() {
 
       if (BluetoothCommand == "CONNECT") {
         Serial.write(119);
+        emergencyStopOn = false;
       }
 
       if (BluetoothCommand == "START") {
         connectedToMobile = true;
+        emergencyStopOn = false;
       }
 
       if (BluetoothCommand == "STOP") {
+        emergencyStopOn = false;
         connectedToMobile = false;
         Serial.write(120);
       }
@@ -46,7 +49,17 @@ void loop() {
         electronicBrakeOn = !electronicBrakeOn;
         Serial.write(124);
       }
+
+      if (BluetoothCommand == "QUIT") {
+        emergencyStopOn = true;
+        connectedToMobile = false;
+        Serial.write(121);
+      }
   } 
+
+  if (emergencyStopOn) {
+    return;
+  }
   
   double potValue = analogRead(PotentiometerPin); //reading the gasthrottle.
   double oldPower = power;

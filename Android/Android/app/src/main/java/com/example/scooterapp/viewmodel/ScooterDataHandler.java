@@ -20,19 +20,19 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
 
     // Scooter values
     private boolean isElectronicBrakeOn;
-    private boolean isInEcoMode;
     private float power;
     private boolean isReceivingPower;
     private boolean isConnected;
     private boolean isInEmergencyStop;
+    private boolean isReceivingSpeed;
 
     private ScooterDataHandler() {
         this.isElectronicBrakeOn = false;
         this.power = 0.0f;
-        this.isInEcoMode = true;
         this.isReceivingPower = false;
         this.isConnected = false;
         this.isInEmergencyStop = false;
+        this.isReceivingSpeed = false;
     }
 
     public static ScooterDataHandler getInstance() {
@@ -87,25 +87,31 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
         if (will) {
             this.bluetoothHandler.startReceivingPower();
             this.isReceivingPower = true;
+            this.isInEmergencyStop = false;
         } else {
             this.bluetoothHandler.sendData(BluetoothCodeSend.STOPSENDING);
             this.isReceivingPower = false;
+            this.isInEmergencyStop = false;
         }
     }
 
-    public void setDrivingMode() {
-        //if the scooter is connected
-        //changes the driving mode of the scooter to the given mode (if not already in that mode)
+    public void emergencyStop() {
+        if (!this.isConnected) {
+            return;
+        }
+
+        this.bluetoothHandler.sendData(BluetoothCodeSend.EMERGENCYSTOP);
+        this.isInEmergencyStop = true;
+        this.isReceivingPower = false;
     }
 
-    public void emergencyStop(boolean bool) {
-        //if the scooter is connected
-        //this will turn the emergency stop of the scooter on or off
-    }
+    public void switchElectronicBrake() {
+        if (!this.isConnected) {
+            return;
+        }
 
-    public void setElectronicBrake(boolean bool) {
-        //if the scooter is connected
-        //this will turn the electronic brake of the scooter on or off
+        this.bluetoothHandler.sendData(BluetoothCodeSend.SWITCHBRAKE);
+        this.isElectronicBrakeOn = !this.isElectronicBrakeOn;
     }
 
     public void willReceiveSpeed(boolean will, AppCompatActivity context) {
@@ -115,8 +121,10 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
             }
 
             this.gpsHandler.setObserver(this);
+            this.isReceivingSpeed = true;
         } else {
             this.gpsHandler.setObserver(null);
+            this.isReceivingSpeed = false;
         }
     }
 
@@ -127,10 +135,6 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
 
     public boolean isElectronicBrakeOn() {
         return isElectronicBrakeOn;
-    }
-
-    public boolean isInEcoMode() {
-        return isInEcoMode;
     }
 
     public float getPower() {
@@ -147,6 +151,10 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
 
     public boolean isInEmergencyStop() {
         return isInEmergencyStop;
+    }
+
+    public boolean isReceivingSpeed() {
+        return isReceivingSpeed;
     }
 
     //endregion

@@ -5,8 +5,6 @@ public enum BluetoothCodeSend {
     STARTSENDING("START"),
     STOPSENDING("STOP"),
     EMERGENCYSTOP("QUIT"),
-    ECOMODE("ECO"),
-    POWERMODE("POWER"),
     SWITCHBRAKE("BRAKE");
 
     private String command;

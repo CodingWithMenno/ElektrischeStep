@@ -30,26 +30,14 @@ public class BluetoothHandler {
         this.observer = observer;
     }
 
-    /**
-     * when using this method to swith from power mode do this:
-     *      1. send new power mode to scooter (via sendData())
-     *      2. switch to the activity of that power mode
-     *      3. call startReceivingData(), with the new textview from the new activity
-     */
+
     public void sendData(BluetoothCodeSend code) {
         if (this.outputStream != null) {
             try {
 
-                if (code == BluetoothCodeSend.ECOMODE || code == BluetoothCodeSend.POWERMODE) {
-                    this.outputStream.write(BluetoothCodeSend.STOPSENDING.value().getBytes());
-                    Thread.sleep(50);
-                    this.outputStream.write(code.value().getBytes());
-                    return;
-                }
-
                 this.outputStream.write(code.value().getBytes());
 
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

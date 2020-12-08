@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D8D8D8"
     tools:context=".view.DrivingActivity">
 
     <TextView
@@ -77,5 +78,19 @@
         app:pvDirection="fromRight"
         app:pvAnimateDuration="1"
         app:pvProgress="0.6" />
+
+    <ImageButton
+        android:id="@+id/powerButton"
+        android:onClick="onEmergencyStopClicked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/black"
+        android:scaleY="3"
+        android:scaleX="3"
+        android:padding="35dp"
+        android:background="null"
+        android:src="@drawable/power_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
