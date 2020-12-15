@@ -123,6 +123,10 @@ public class ScooterDataHandler implements BluetoothObserver, GpsObserver {
             this.gpsHandler.setObserver(this);
             this.isReceivingSpeed = true;
         } else {
+            if (this.gpsHandler == null) {
+                return;
+            }
+
             this.gpsHandler.setObserver(null);
             this.isReceivingSpeed = false;
         }

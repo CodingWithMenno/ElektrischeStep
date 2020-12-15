@@ -84,9 +84,11 @@ public class DrivingActivity extends AppCompatActivity implements ScooterObserve
         if (!this.scooterDataHandler.isReceivingPower()) {
             this.startSendingButton.setText("STOP");
             this.scooterDataHandler.willReceiveScooterPower(true);
+            this.scooterDataHandler.willReceiveSpeed(true, this);
         } else {
             this.startSendingButton.setText("START");
             this.scooterDataHandler.willReceiveScooterPower(false);
+            this.scooterDataHandler.willReceiveSpeed(false, this);
         }
 
         try {
@@ -102,6 +104,10 @@ public class DrivingActivity extends AppCompatActivity implements ScooterObserve
     @Override
     protected void onStop() {
         super.onStop();
-        this.scooterDataHandler.willReceiveScooterPower(false);
+
+        if (this.scooterDataHandler != null) {
+            this.scooterDataHandler.willReceiveScooterPower(false);
+            this.scooterDataHandler.willReceiveSpeed(false, this);
+        }
     }
 }

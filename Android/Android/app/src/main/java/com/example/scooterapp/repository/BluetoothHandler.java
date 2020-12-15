@@ -113,9 +113,9 @@ public class BluetoothHandler {
             this.outputStream = this.bluetoothSocket.getOutputStream();
 
             sendData(BluetoothCodeSend.CONNECT);
-
+            System.out.println("TEST 1");
             int received = this.inputStream.read();
-
+            System.out.println("TEST 2");
             if (received != BluetoothCodeReceive.CONNECT.value()) {
                 return false;
             }
